@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="core" />
         <module name="discovery" />
+        <module name="gateway" />
         <module name="master" />
       </profile>
     </annotationProcessing>
@@ -17,6 +18,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="core" options="-parameters" />
       <module name="discovery" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="master" options="-parameters" />
     </option>
   </component>

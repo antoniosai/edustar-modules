@@ -1,0 +1,56 @@
+version: '3.8'
+services:
+  discoveryservice:
+    image: edustar/discovery-service:1.0
+    build: .
+    ports:
+      - "8761:8761"
+    restart: always
+    networks:
+      - edustar-microservice
+  masterservice:
+    image: edustar/master-service:1.0
+    build: .
+    ports:
+      - "8001:8001"
+    restart: always
+    depends_on:
+      - dbmaster
+      - discoveryservice
+    environment:
+      spring.datasource.url: jdbc:postgresql://dbmaster:5432/master
+      spring.datasource.username: myusername
+      spring.datasource.password: mypassword
+      spring.jpa.hibernate.ddl.auto: none
+      eureka.client.serviceUrl.defaultZone: http://discoveryservice:8761/eureka
+    networks:
+      - edustar-microservice
+  apigateway:
+    image: edustar/api-gateway:1.0
+    build: .
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - discoveryservice
+      - masterservice
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://discoveryservice:8761/eureka
+      spring.cloud.gateway.routes[0].id: master
+      spring.cloud.gateway.routes[0].uri: http://masterservice:8001/
+      spring.cloud.gateway.routes[0].predicates[0]: Path=/master/**
+    networks:
+      - edustar-microservice
+  dbmaster:
+    image: postgres:15.1
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_USER=myusername
+      - POSTGRES_DB=master
+    networks:
+      - edustar-microservice
+networks:
+  edustar-microservice:
