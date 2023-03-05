@@ -2,3 +2,4 @@ core/
 master/
 discovery/
 gateway/
+jwt/

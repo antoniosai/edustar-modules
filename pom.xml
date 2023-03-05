@@ -10,6 +10,7 @@
 
     <modules>
         <module>discovery</module>
+        <module>jwt</module>
         <module>gateway</module>
         <module>core</module>
         <module>master</module>

@@ -10,6 +10,7 @@
         <module name="core" />
         <module name="discovery" />
         <module name="gateway" />
+        <module name="jwt" />
         <module name="master" />
       </profile>
     </annotationProcessing>
@@ -19,6 +20,7 @@
       <module name="core" options="-parameters" />
       <module name="discovery" options="-parameters" />
       <module name="gateway" options="-parameters" />
+      <module name="jwt" options="-parameters" />
       <module name="master" options="-parameters" />
     </option>
   </component>

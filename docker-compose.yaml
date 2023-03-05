@@ -1,5 +1,19 @@
 version: '3.8'
 services:
+  authservice:
+    image: jboss/keycloak
+    build: .
+#    command: ["start-dev", "--http-port=8080"]
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - dbmaster
+    networks:
+      - edustar-microservice
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
   discoveryservice:
     image: edustar/discovery-service:1.0
     build: .
@@ -26,19 +40,24 @@ services:
     networks:
       - edustar-microservice
   apigateway:
-    image: edustar/api-gateway:1.0
+    image: edustar/api-gateway:1.1
     build: .
     ports:
-      - "8080:8080"
+      - "8888:8888"
     restart: always
     depends_on:
       - discoveryservice
       - masterservice
+      - authservice
     environment:
+      server.port: 8888
       eureka.client.serviceUrl.defaultZone: http://discoveryservice:8761/eureka
       spring.cloud.gateway.routes[0].id: master
       spring.cloud.gateway.routes[0].uri: http://masterservice:8001/
       spring.cloud.gateway.routes[0].predicates[0]: Path=/master/**
+      spring.cloud.gateway.routes[1].id: auth
+      spring.cloud.gateway.routes[1].uri: http://authservice:8080/
+      spring.cloud.gateway.routes[1].predicates[0]: Path=/auth/**
     networks:
       - edustar-microservice
   dbmaster:
