@@ -14,9 +14,21 @@ logging:
             netty: INFO
 server:
     port: 8888
+
+custom:
+    gateway:
+        expose-unsecured-urls: true
+        unsecured-urls:
+            - /api/v1/welcome/unsecured-hello
 spring:
     application:
         name: api-gateway
+
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    jwk-set-uri: lb://jwt
     cloud:
         gateway:
             globalcors:
