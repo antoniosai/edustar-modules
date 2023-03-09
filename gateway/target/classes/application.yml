@@ -1,0 +1,52 @@
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8761/eureka
+    instance:
+        prefer-ip-address: true
+logging:
+    level:
+        org:
+            springframework:
+                cloud:
+                    gateway: TRACE
+        reactor:
+            netty: INFO
+server:
+    port: 8888
+spring:
+    application:
+        name: api-gateway
+    cloud:
+        gateway:
+            globalcors:
+                add-to-simple-url-handler-mapping: true
+                corsConfigurations:
+                    '[/**]':
+                        allowedOrigins: "http://localhost:4200"
+                        allowedHeaders: "*"
+                        allowedMethods:
+                            - GET
+                            - POST
+                            - PUT
+                            - DELETE
+            routes:
+                - id: jwt
+                  uri: lb://jwt/
+                  predicates:
+                      - Path=/jwt/**
+                - id: master
+                  uri: lb://master/
+                  predicates:
+                      - Path=/master/**
+                - id: assessment
+                  uri: http://localhost:8002/
+                  predicates:
+                      - Path=/assessment/**
+                - id: auth
+                  uri: http://localhost:8080/
+                  predicates:
+                      - Path=/auth/**
+    output:
+        ansi:
+            enabled: ALWAYS
