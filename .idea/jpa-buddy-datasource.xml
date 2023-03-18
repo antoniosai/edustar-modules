@@ -2,7 +2,10 @@
 <project version="4">
   <component name="JpbDataSourceConfig">
     <data-sources>
-      <data-source id="d53603fc-4027-4cb7-ae69-05906f070218" name="EDUSTAR-DB_MASTER" url="jdbc:postgresql://localhost:5430/db_master" driverClass="org.postgresql.Driver" />
+      <data-source id="d53603fc-4027-4cb7-ae69-05906f070218" name="EDUSTAR-DB_MASTER" url="jdbc:postgresql://localhost:5432/master" driverClass="org.postgresql.Driver" />
     </data-sources>
+    <data-source-infos>
+      <data-source-info id="" persistence-unit-name="Default" />
+    </data-source-infos>
   </component>
 </project>

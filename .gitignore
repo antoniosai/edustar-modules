@@ -1,3 +1,6 @@
+.idea/
+.ipb/
+.vscode/
 core/
 master/
 discovery/
