@@ -4,6 +4,8 @@ eureka:
             defaultZone: http://localhost:8761/eureka
     instance:
         prefer-ip-address: true
+auth:
+    serviceid: jwt
 logging:
     level:
         org:
@@ -51,14 +53,6 @@ spring:
                   uri: lb://master/
                   predicates:
                       - Path=/master/**
-                - id: assessment
-                  uri: http://localhost:8002/
-                  predicates:
-                      - Path=/assessment/**
-                - id: auth
-                  uri: http://localhost:8080/
-                  predicates:
-                      - Path=/auth/**
     output:
         ansi:
             enabled: ALWAYS

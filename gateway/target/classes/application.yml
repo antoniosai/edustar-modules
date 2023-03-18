@@ -4,6 +4,8 @@ eureka:
             defaultZone: http://localhost:8761/eureka
     instance:
         prefer-ip-address: true
+auth:
+    serviceid: jwt
 logging:
     level:
         org:
@@ -14,9 +16,21 @@ logging:
             netty: INFO
 server:
     port: 8888
+
+custom:
+    gateway:
+        expose-unsecured-urls: true
+        unsecured-urls:
+            - /api/v1/welcome/unsecured-hello
 spring:
     application:
         name: api-gateway
+
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    jwk-set-uri: lb://jwt
     cloud:
         gateway:
             globalcors:
@@ -39,14 +53,6 @@ spring:
                   uri: lb://master/
                   predicates:
                       - Path=/master/**
-                - id: assessment
-                  uri: http://localhost:8002/
-                  predicates:
-                      - Path=/assessment/**
-                - id: auth
-                  uri: http://localhost:8080/
-                  predicates:
-                      - Path=/auth/**
     output:
         ansi:
             enabled: ALWAYS
