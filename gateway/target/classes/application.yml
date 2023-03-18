@@ -1,0 +1,58 @@
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8761/eureka
+    instance:
+        prefer-ip-address: true
+auth:
+    serviceid: jwt
+logging:
+    level:
+        org:
+            springframework:
+                cloud:
+                    gateway: TRACE
+        reactor:
+            netty: INFO
+server:
+    port: 8888
+
+custom:
+    gateway:
+        expose-unsecured-urls: true
+        unsecured-urls:
+            - /api/v1/welcome/unsecured-hello
+spring:
+    application:
+        name: api-gateway
+
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    jwk-set-uri: lb://jwt
+    cloud:
+        gateway:
+            globalcors:
+                add-to-simple-url-handler-mapping: true
+                corsConfigurations:
+                    '[/**]':
+                        allowedOrigins: "http://localhost:4200"
+                        allowedHeaders: "*"
+                        allowedMethods:
+                            - GET
+                            - POST
+                            - PUT
+                            - DELETE
+            routes:
+                - id: jwt
+                  uri: lb://jwt/
+                  predicates:
+                      - Path=/jwt/**
+                - id: master
+                  uri: lb://master/
+                  predicates:
+                      - Path=/master/**
+    output:
+        ansi:
+            enabled: ALWAYS
